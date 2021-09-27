@@ -105,13 +105,13 @@ Fill each form with user's data
     FOR    ${row}    IN    @{orders}
         Close the annoying modal
         Complete form from csv data    ${row}
-        Preview Robot
-        Order Robot
+        Wait Until Keyword Succeeds    3x    1sec    Preview Robot
+        Wait Until Keyword Succeeds    3x    1sec    Order Robot
         ${pdf}=    Store the receipt as a PDF file    ${row}[Order number]
         ${screenshot}=    Robot screenshot    ${row}[Order number]
-        Embed the robot screenshot to the receipt PDF file    ${screenshot}    ${pdf}
+        Wait Until Keyword Succeeds    3x    1sec    Embed the robot screenshot to the receipt PDF file    ${screenshot}    ${pdf}
         Remove File    ${screenshot}
-        Order Another Robot   
+        Wait Until Keyword Succeeds    3x    1sec    Order Another Robot   
     END
     Pdfs ZIP File
     Close Browser
