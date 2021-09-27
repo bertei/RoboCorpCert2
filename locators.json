@@ -1,4 +1,18 @@
 {
+    "Button": {
+        "screenshot": ".images\\button-screenshot.png",
+        "source": "https://robotsparebinindustries.com/#/robot-order",
+        "strategy": "xpath",
+        "type": "browser",
+        "value": "//button[contains(.,'OK')]"
+    },
+    "Button1": {
+        "screenshot": ".images\\button1-screenshot.png",
+        "source": "https://robotsparebinindustries.com/#/robot-order",
+        "strategy": "xpath",
+        "type": "browser",
+        "value": "(//button[@type='button'])[3]"
+    },
     "Input": {
         "screenshot": ".images\\input-screenshot.png",
         "source": "https://robotsparebinindustries.com/#/robot-order",

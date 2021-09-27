@@ -23,7 +23,8 @@ Open Browser from Vault
 
 *** Keywords ***
 Close the annoying modal
-    Click Button    css: .btn-dark
+    Wait Until Page Contains Element   css:.btn-danger    
+    Click Button    css:.btn-danger   
 
 *** Keywords ***
 Get CSV from user input
@@ -56,17 +57,22 @@ Complete form from csv data
 
 *** Keywords ***
 Preview Robot
-    Click Element    id:preview
-    Wait Until Element Is Visible    id:robot-preview
-
+    Wait Until Page Contains Element    id:preview
+    Click Button    id:preview
+    Wait Until Element Is Visible    id:robot-preview-image
 *** Keywords ***
 Order Robot
-    Click Button    id:order
-    Wait Until Element Is Visible    id:order-completion
-
+    Wait Until Page Contains Element    id:order
+    FOR    ${i}    IN RANGE   5
+        Click Button    id:order
+        ${order-ok}=    Does Page Contain Element    id:order-completion
+        Log    ${order-ok}
+        Exit For Loop If    ${order-ok}
+    END
 *** Keywords ***
 Order Another Robot
-    Click Button    order-another
+    #Wait Until Page Contains Element    id:order-another
+    Click Button    id:order-another
 
 *** Keywords ***
 Store the receipt as a PDF file
@@ -79,7 +85,8 @@ Store the receipt as a PDF file
 *** Keywords ***
 Robot screenshot
     [Arguments]    ${order_number}
-    Screenshot    robot-preview    ${CURDIR}${/}output${/}receipts${/}${order_number}.PNG
+    Wait Until Element Is Visible    robot-preview-image
+    Screenshot    robot-preview-image    ${CURDIR}${/}output${/}receipts${/}${order_number}.PNG
     [Return]    ${CURDIR}${/}output${/}receipts${/}${order_number}.PNG
 *** Keywords ***
 Embed the robot screenshot to the receipt PDF file
@@ -98,20 +105,19 @@ Fill each form with user's data
     FOR    ${row}    IN    @{orders}
         Close the annoying modal
         Complete form from csv data    ${row}
-        Wait Until Keyword Succeeds    2x    3secs   Preview Robot
-        Wait Until Keyword Succeeds    2x    3secs   Order Robot
+        Preview Robot
+        Order Robot
         ${pdf}=    Store the receipt as a PDF file    ${row}[Order number]
         ${screenshot}=    Robot screenshot    ${row}[Order number]
         Embed the robot screenshot to the receipt PDF file    ${screenshot}    ${pdf}
         Remove File    ${screenshot}
-        Wait Until Keyword Succeeds    3x    3secs    Order Another Robot   
+        Order Another Robot   
     END
     Pdfs ZIP File
     Close Browser
 *** Tasks ***
 Exec 
     Open Browser from Vault
-    Close the annoying modal
     [TearDown]    Fill each form with user's data
     
 
