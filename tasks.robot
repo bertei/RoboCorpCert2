@@ -29,9 +29,9 @@ Close the annoying modal
 *** Keywords ***
 Get CSV from user input
     Add text input    csvUrlInput    label=Insert CSV url
+    Add text    https://robotsparebinindustries.com/orders.csv
     ${response}=    Run dialog
     [Return]    ${response.csvUrlInput}
-    #https://robotsparebinindustries.com/orders.csv
 
 *** Keywords ***
 Download CSV and Get Orders
@@ -71,7 +71,6 @@ Order Robot
     END
 *** Keywords ***
 Order Another Robot
-    #Wait Until Page Contains Element    id:order-another
     Click Button    id:order-another
 
 *** Keywords ***
