@@ -58,8 +58,11 @@ Complete form from csv data
 *** Keywords ***
 Preview Robot
     Wait Until Page Contains Element    id:preview
-    Click Button    id:preview
-    Wait Until Element Is Visible    id:robot-preview-image
+    FOR    ${i}    IN RANGE   5
+        Click Button    id:preview
+        ${preview-ok}=    Does Page Contain Element    id:robot-preview-image
+        Exit For Loop If    ${preview-ok}
+    END
 *** Keywords ***
 Order Robot
     Wait Until Page Contains Element    id:order
